@@ -21,7 +21,7 @@ public class Converter {
             for (String prefixSynonym : record.prefixSynonyms)
                 prefixMap.put(prefixSynonym, record);
             trie.put(record.uriPrefix, record);
-            for (String uriPrefixSynonym: record.uriPrefixSynonyms)
+            for (String uriPrefixSynonym : record.uriPrefixSynonyms)
                 trie.put(uriPrefixSynonym, record);
         }
     }
@@ -38,11 +38,8 @@ public class Converter {
         return records;
     }
 
-    public PatriciaTrie<Record> getTrie() {
-        return trie;
-    }
-
     public Reference parseURI(String uri) {
+        // TODO it appears select() always returns the root if nothing else available
         Map.Entry<String, Record> entry = trie.select(uri);
         if (entry == null)
             return null;
@@ -84,11 +81,56 @@ public class Converter {
         return prefixMap.get(prefix);
     }
 
+    public Record getRecord(Reference reference) {
+        return getRecord(reference.getPrefix());
+    }
+
     public String expand(String curie) {
         Reference reference = parseCURIE(curie);
-        Record record = getRecord(reference.getPrefix());
+        if (reference == null)
+            return null;
+        return expand(reference);
+    }
+
+    public String expand(Reference reference) {
+        Record record = getRecord(reference);
         if (record == null)
             return null;
-        return record.getURI(reference.getIdentifier());
+        return record.getURI(reference);
+    }
+
+    public String expand(String prefix, String identifier) {
+        return expand(new Reference(prefix, identifier));
+    }
+
+    public String standardizePrefix(String prefix) {
+        Record record = getRecord(prefix);
+        if (record == null)
+            return null;
+        return record.prefix;
+    }
+
+    public String standardizeCURIE(String curie) {
+        Reference reference = parseCURIE(curie);
+        if (reference == null)
+            return null;
+        Reference referenceStandard = standardizeReference(reference);
+        if (referenceStandard == null)
+            return null;
+        return referenceStandard.getCURIE(sep);
+    }
+
+    public Reference standardizeReference(Reference reference) {
+        String normPrefix = standardizePrefix(reference.getPrefix());
+        if (normPrefix == null)
+            return null;
+        return new Reference(normPrefix, reference.getIdentifier());
+    }
+
+    public String standardizeURI(String uri) {
+        Reference reference = parseURI(uri);
+        if (reference == null)
+            return null;
+        return expand(reference);
     }
 }
