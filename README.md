@@ -24,7 +24,7 @@ class CuriesDemo {
         // "http://purl.obolibrary.org/obo/CHEBI_1234"
 
         // Expand a reference into a URI
-        String uri3 = converter.expand(reference1);
+        String uri3 = converter.expand(reference);
         // "http://purl.obolibrary.org/obo/CHEBI_1234"
 
         // Compress a URI to a CURIE string
@@ -32,7 +32,11 @@ class CuriesDemo {
         // CHEBI:1234
 
         // Parse a URI into a reference
-        Reference reference = converter.parseURI(uri);
+        Reference reference1 = converter.parseURI(uri);
+        // new Reference("CHEBI", "1234")
+        
+        // Parse a CURIE into a reference
+        Reference reference2 = converter.parseCURIE(curie);
         // new Reference("CHEBI", "1234")
     }
 }
