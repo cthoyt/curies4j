@@ -12,11 +12,11 @@ public class Converter {
         trie = new PatriciaTrie<>();
         prefixMap = new HashMap<>();
         for (Record record : records) {
-            prefixMap.put(record.prefix, record);
-            for (String prefixSynonym : record.prefixSynonyms)
+            prefixMap.put(record.getPrefix(), record);
+            for (String prefixSynonym : record.getPrefixSynonyms())
                 prefixMap.put(prefixSynonym, record);
-            trie.put(record.uriPrefix, record);
-            for (String uriPrefixSynonym : record.uriPrefixSynonyms)
+            trie.put(record.getUriPrefix(), record);
+            for (String uriPrefixSynonym : record.getUriPrefixSynonyms())
                 trie.put(uriPrefixSynonym, record);
         }
     }
@@ -167,7 +167,7 @@ public class Converter {
         Record record = getRecord(prefix);
         if (record == null)
             return null;
-        return record.prefix;
+        return record.getPrefix();
     }
 
     public String standardizeCURIE(String curie) {

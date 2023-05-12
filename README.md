@@ -13,8 +13,11 @@ class CuriesDemo {
 
         String curie = "CHEBI:1234";
         String uri = "http://purl.obolibrary.org/obo/CHEBI_1234";
+
         String reference = new Reference("CHEBI", "1234");
-        
+        String prefix = reference.getPrefix();  // "CHEBI"
+        String identifier = reference.getIdentfier();  // "1234"
+
         // 2 ways to expand a CURIE into a URI
         String uri1 = converter.expand("CHEBI:1234");
         String uri2 = converter.expand("CHEBI", "1234");
@@ -27,7 +30,7 @@ class CuriesDemo {
         // Compress a URI to a CURIE string
         String curie1 = converter.compress(uri); 
         // CHEBI:1234
-        
+
         // Parse a URI into a reference
         Reference reference = converter.parseURI(uri);
         // new Reference("CHEBI", "1234")

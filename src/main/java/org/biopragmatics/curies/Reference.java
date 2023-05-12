@@ -1,8 +1,8 @@
 package org.biopragmatics.curies;
 
 public class Reference {
-    String prefix;
-    String identifier;
+    private final String prefix;
+    private final String identifier;
 
     public Reference(String prefix, String identifier) {
         this.prefix = prefix;
