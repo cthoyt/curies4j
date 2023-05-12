@@ -17,11 +17,7 @@ public class Reference {
         return identifier;
     }
 
-    public String getCURIE(String sep) {
-        return this.prefix + sep + this.identifier;
-    }
-
     public String getCURIE() {
-        return getCURIE(":");
+        return this.prefix + ":" + this.identifier;
     }
 }

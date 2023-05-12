@@ -25,12 +25,7 @@ public class ConverterTest {
         map.put("OBO", "http://purl.obolibrary.org/obo/");
         simpleConverter = new Converter(map);
 
-        List<String> chebiPrefixSynonyms = Collections.singletonList("CHEBI");
-        List<String> chebiURIPrefixSynonyms = Collections.singletonList("https://bioregistry.io/chebi:");
-        Record chebi = new Record("chebi", "http://purl.obolibrary.org/obo/CHEBI_", chebiPrefixSynonyms, chebiURIPrefixSynonyms);
-        List<Record> records = new ArrayList<>();
-        records.add(chebi);
-        complexConverter = new Converter(records);
+        complexConverter = Converter.getExampleConverter();
     }
 
 
