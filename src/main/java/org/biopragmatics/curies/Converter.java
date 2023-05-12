@@ -2,6 +2,7 @@ package org.biopragmatics.curies;
 
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.*;
 
@@ -62,7 +63,7 @@ public class Converter {
         return new Converter(Loader.getRecords(url));
     }
 
-    public Reference parseURI(String uri) {
+    public @Nullable Reference parseURI(String uri) {
         Map.Entry<String, Record> entry = trie.select(uri);
         // TODO it appears select() always returns the root if nothing else available
         if (entry == null)
@@ -75,7 +76,7 @@ public class Converter {
         return record.getReference(identifier);
     }
 
-    public Reference parseCURIE(String curie) {
+    public @Nullable Reference parseCURIE(String curie) {
         String[] parts = curie.split(":", 2);
         if (parts.length != 2)
             return null;
@@ -99,7 +100,7 @@ public class Converter {
      * }
      * </pre>
      */
-    public String compress(String uri) {
+    public @Nullable String compress(String uri) {
         Reference reference = parseURI(uri);
         if (reference == null)
             return null;
@@ -112,11 +113,11 @@ public class Converter {
      * @param prefix The prefix of the resource to get
      * @return The record associated with the prefix
      */
-    public Record getRecord(String prefix) {
+    public @Nullable Record getRecord(String prefix) {
         return prefixMap.get(prefix);
     }
 
-    public Record getRecord(Reference reference) {
+    public @Nullable Record getRecord(Reference reference) {
         return getRecord(reference.getPrefix());
     }
 
@@ -125,7 +126,9 @@ public class Converter {
      * The inverse of this operation is {@link org.biopragmatics.curies.Converter#compress}.
      *
      * @param curie A string representation of a compact URI (CURIE)
-     * @return A string representation of a URI
+     * @return A string representation of a URI. If the CURIE can not be
+     * parsed, returns null. If the CURIE's preix is not registered in
+     * this converter, returns null.
      *
      * <h2>Usage</h2>
      *
@@ -137,7 +140,7 @@ public class Converter {
      * }
      * </pre>
      */
-    public String expand(String curie) {
+    public @Nullable String expand(String curie) {
         Reference reference = parseCURIE(curie);
         if (reference == null)
             return null;
@@ -149,7 +152,8 @@ public class Converter {
      * The inverse of this operation is {@link org.biopragmatics.curies.Converter#parseURI}.
      *
      * @param reference A representation of a prefix/identifier pair
-     * @return A string representation of a URI
+     * @return A string representation of a URI. If the prefix in this reference is not
+     * registered in this converter, returns null.
      *
      * <h2>Usage</h2>
      *
@@ -162,7 +166,7 @@ public class Converter {
      * }
      * </pre>
      */
-    public String expand(Reference reference) {
+    public @Nullable String expand(Reference reference) {
         Record record = getRecord(reference);
         if (record == null)
             return null;
@@ -186,18 +190,18 @@ public class Converter {
      * }
      * </pre>
      */
-    public String expand(String prefix, String identifier) {
+    public @Nullable String expand(String prefix, String identifier) {
         return expand(new Reference(prefix, identifier));
     }
 
-    public String standardizePrefix(String prefix) {
+    public @Nullable String standardizePrefix(String prefix) {
         Record record = getRecord(prefix);
         if (record == null)
             return null;
         return record.getPrefix();
     }
 
-    public String standardizeCURIE(String curie) {
+    public @Nullable String standardizeCURIE(String curie) {
         Reference reference = parseCURIE(curie);
         if (reference == null)
             return null;
@@ -207,14 +211,14 @@ public class Converter {
         return referenceStandard.getCURIE();
     }
 
-    public Reference standardizeReference(Reference reference) {
+    public @Nullable Reference standardizeReference(Reference reference) {
         String normPrefix = standardizePrefix(reference.getPrefix());
         if (normPrefix == null)
             return null;
         return new Reference(normPrefix, reference.getIdentifier());
     }
 
-    public String standardizeURI(String uri) {
+    public @Nullable String standardizeURI(String uri) {
         Reference reference = parseURI(uri);
         if (reference == null)
             return null;

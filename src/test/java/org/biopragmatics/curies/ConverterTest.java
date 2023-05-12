@@ -6,8 +6,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Unit test for the Converter
@@ -29,6 +28,17 @@ public class ConverterTest {
         complexConverter = Converter.getExampleConverter();
     }
 
+    @Test
+    public void testGetRecord() {
+        assertNull(simpleConverter.getRecord("NOPE"));
+        Record record = simpleConverter.getRecord("CHEBI");
+        assertNotNull(record);
+        assertEquals("CHEBI", record.getPrefix());
+
+        assertNull(complexConverter.getRecord("NOPENOPENOPE"));
+        assertNotNull(complexConverter.getRecord("chebi"));
+        assertNotNull(complexConverter.getRecord("CHEBI"));
+    }
 
     @Test
     public void testParseCURIE() {
