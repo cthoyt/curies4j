@@ -34,6 +34,34 @@ public class Converter {
         return records;
     }
 
+    /**
+     * Get an example converter that contains entries for ChEBI, GO, and OBO.
+     * This is good enough to demonstrate how synonyms for prefixes and URIs work
+     * as well as the possibility of overlapping URI prefixes.
+     *
+     * @return An instantiated Converter object suitable for examples, but not for
+     * actual use.
+     */
+    public static Converter getExampleConverter() {
+        List<String> chebiPrefixSynonyms = Collections.singletonList("CHEBI");
+        List<String> chebiURIPrefixSynonyms = Collections.singletonList("https://bioregistry.io/chebi:");
+        Record chebi = new Record("chebi", "http://purl.obolibrary.org/obo/CHEBI_", chebiPrefixSynonyms, chebiURIPrefixSynonyms);
+        List<Record> records = new ArrayList<>();
+        records.add(chebi);
+        return new Converter(records);
+    }
+
+    /**
+     * Get a converter over the web with the Bioregistry data inside it.
+     *
+     * @return A converter with Bioregistry records.
+     * @throws IOException if there's an issue getting the web content from GitHub
+     */
+    public static Converter loadBioregistry() throws IOException {
+        String url = "https://github.com/biopragmatics/bioregistry/raw/main/exports/contexts/bioregistry.epm.json";
+        return new Converter(Loader.getRecords(url));
+    }
+
     public Reference parseURI(String uri) {
         Map.Entry<String, Record> entry = trie.select(uri);
         // TODO it appears select() always returns the root if nothing else available
@@ -95,6 +123,7 @@ public class Converter {
     /**
      * Expand a compact URI (CURIE) into a URI.
      * The inverse of this operation is {@link org.biopragmatics.curies.Converter#compress}.
+     *
      * @param curie A string representation of a compact URI (CURIE)
      * @return A string representation of a URI
      *
@@ -190,33 +219,5 @@ public class Converter {
         if (reference == null)
             return null;
         return expand(reference);
-    }
-
-    /**
-     * Get an example converter that contains entries for ChEBI, GO, and OBO.
-     * This is good enough to demonstrate how synonyms for prefixes and URIs work
-     * as well as the possibility of overlapping URI prefixes.
-     *
-     * @return An instantiated Converter object suitable for examples, but not for
-     * actual use.
-     */
-    public static Converter getExampleConverter() {
-        List<String> chebiPrefixSynonyms = Collections.singletonList("CHEBI");
-        List<String> chebiURIPrefixSynonyms = Collections.singletonList("https://bioregistry.io/chebi:");
-        Record chebi = new Record("chebi", "http://purl.obolibrary.org/obo/CHEBI_", chebiPrefixSynonyms, chebiURIPrefixSynonyms);
-        List<Record> records = new ArrayList<>();
-        records.add(chebi);
-        return new Converter(records);
-    }
-
-    /**
-     * Get a converter over the web with the Bioregistry data inside it.
-     *
-     * @return A converter with Bioregistry records.
-     * @throws IOException if there's an issue getting the web content from GitHub
-     */
-    public static Converter loadBioregistry() throws IOException {
-        String url = "https://github.com/biopragmatics/bioregistry/raw/main/exports/contexts/bioregistry.epm.json";
-        return new Converter(Loader.getRecords(url));
     }
 }
