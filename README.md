@@ -3,6 +3,9 @@
 A Java implementation of the [`curies`](https://github.com/cthoyt/curies/) Python package,
 which enables idiomatic conversion between URIs and compact URIs (CURIEs).
 
+Note that this package returns `null` when it gets content it can't handle instead of
+throwing errors.
+
 ```java
 import org.biopragmatics.curies.Converter;
 import org.biopragmatics.curies.Reference;
