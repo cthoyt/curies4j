@@ -2,6 +2,7 @@ package org.biopragmatics.curies;
 
 import org.apache.commons.collections4.trie.PatriciaTrie;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Converter {
@@ -50,16 +51,15 @@ public class Converter {
         String[] parts = curie.split(":", 2);
         if (parts.length != 2)
             return null;
-        return new Reference(parts[0], parts[1]);
+        return new Reference(standardizePrefix(parts[0]), parts[1]);
     }
 
     /**
-     * Compress a URI into a compact URI (CURIE)
+     * Compress a URI into a compact URI (CURIE).
+     * The inverse of this operation is {@link org.biopragmatics.curies.Converter#expand}.
      *
      * @param uri A string representation of a URI
      * @return A string representation of a compact URI (CURIE)
-     *
-     * The inverse of this operation is {@link org.biopragmatics.curies.Converter#expand}.
      *
      * <h2>Usage</h2>
      *
@@ -93,12 +93,10 @@ public class Converter {
     }
 
     /**
-     * Expand a compact URI (CURIE) into a URI
-     *
+     * Expand a compact URI (CURIE) into a URI.
+     * The inverse of this operation is {@link org.biopragmatics.curies.Converter#compress}.
      * @param curie A string representation of a compact URI (CURIE)
      * @return A string representation of a URI
-     *
-     * The inverse of this operation is {@link org.biopragmatics.curies.Converter#compress}.
      *
      * <h2>Usage</h2>
      *
@@ -209,5 +207,16 @@ public class Converter {
         List<Record> records = new ArrayList<>();
         records.add(chebi);
         return new Converter(records);
+    }
+
+    /**
+     * Get a converter over the web with the Bioregistry data inside it.
+     *
+     * @return A converter with Bioregistry records.
+     * @throws IOException if there's an issue getting the web content from GitHub
+     */
+    public static Converter loadBioregistry() throws IOException {
+        String url = "https://github.com/biopragmatics/bioregistry/raw/main/exports/contexts/bioregistry.epm.json";
+        return new Converter(Loader.getRecords(url));
     }
 }
