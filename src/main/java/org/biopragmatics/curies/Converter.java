@@ -90,7 +90,7 @@ public class Converter {
      * @param uri A string representation of a URI
      * @return A string representation of a compact URI (CURIE)
      *
-     * <h2>Usage</h2>
+     * Usage:
      *
      * <pre>
      * {@code
@@ -130,7 +130,7 @@ public class Converter {
      * parsed, returns null. If the CURIE's preix is not registered in
      * this converter, returns null.
      *
-     * <h2>Usage</h2>
+     * Usage:
      *
      * <pre>
      * {@code
@@ -155,7 +155,7 @@ public class Converter {
      * @return A string representation of a URI. If the prefix in this reference is not
      * registered in this converter, returns null.
      *
-     * <h2>Usage</h2>
+     * Usage:
      *
      * <pre>
      * {@code
@@ -180,7 +180,7 @@ public class Converter {
      * @param identifier The local unique identifier for an entity in the semantic space defined by the given prefix
      * @return A string representation of a URI
      *
-     * <h2>Usage</h2>
+     * Usage:
      *
      * <pre>
      * {@code

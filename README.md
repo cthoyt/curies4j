@@ -60,3 +60,7 @@ class CuriesDemo2 {
     }
 }
 ```
+
+## Installation
+
+See https://central.sonatype.com/artifact/org.biopragmatics.curies/curies
