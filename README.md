@@ -64,3 +64,8 @@ class CuriesDemo2 {
 ## Installation
 
 See https://central.sonatype.com/artifact/org.biopragmatics.curies/curies
+
+## Acknowledgements
+
+Special thanks to [Jonas Schaub](https://github.com/JonasSchaub) for helping with packaging and deployment to Maven Central.
+
