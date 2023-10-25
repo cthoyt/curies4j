@@ -61,8 +61,8 @@ class AdHocResourceDemo {
         prefixMap.put("Orphanet", "http://www.orpha.net/ORDO/Orphanet_");
 
         Converter converter = new Converter(prefixMap);
-        converter.compress("https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:1234");
-        // doid:1234
+        converter.compress("http://www.orpha.net/ORDO/Orphanet_85163");
+        // Orphabet:85163
     }
 }
 ```
