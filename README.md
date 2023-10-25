@@ -45,6 +45,41 @@ class CuriesDemo1 {
 }
 ```
 
+## Loading an EPM
+
+If you have the URL for an extended prefix map, you can do the following:
+
+```java
+import org.biopragmatics.curies.Converter;
+import org.biopragmatics.curies.Loader;
+
+class RemoteResourceDemo {
+    public static void main(String[] args) {
+        String url = "https://raw.githubusercontent.com/biopragmatics/bioregistry/main/exports/contexts/bioregistry.epm.json";
+        Converter converter = Converter(Loader.getRecords(url));
+        converter.compress("https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:1234");
+        // doid:1234
+    }
+}
+```
+
+Similarly, if you have a file object, you can do:
+
+```java
+import java.io.*;
+import org.biopragmatics.curies.Converter;
+import org.biopragmatics.curies.Loader;
+
+class LocalResourceDemo {
+    public static void main(String[] args) {
+        File file = new File("/Users/cthoyt/dev/bioregistry/exporst/contexts/bioregistry.epm.json")
+        Converter converter = Converter(Loader.getRecords(file));
+        converter.compress("https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:1234");
+        // doid:1234
+    }
+}
+```
+
 ## Bioregistry Integration
 
 The Bioregistry can be loaded over the web.
