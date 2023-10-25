@@ -45,7 +45,29 @@ class CuriesDemo1 {
 }
 ```
 
-## Loading an EPM
+## Loading a Prefix Map
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import org.biopragmatics.curies.Converter;
+import org.biopragmatics.curies.Loader;
+
+class AdHocResourceDemo {
+    public static void main(String[] args) {
+        Map<String, String> prefixMap = new HashMap<>();
+        prefixMap.put("OMIM", "https://omim.org/entry/");
+        prefixMap.put("OMIMPS", "https://omim.org/phenotypicSeries/PS");
+        prefixMap.put("Orphanet", "http://www.orpha.net/ORDO/Orphanet_");
+
+        Converter converter = new Converter(prefixMap);
+        converter.compress("https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:1234");
+        // doid:1234
+    }
+}
+```
+
+## Loading an Extended Prefix Map
 
 If you have the URL for an extended prefix map, you can do the following:
 
@@ -56,7 +78,7 @@ import org.biopragmatics.curies.Loader;
 class RemoteResourceDemo {
     public static void main(String[] args) {
         String url = "https://raw.githubusercontent.com/biopragmatics/bioregistry/main/exports/contexts/bioregistry.epm.json";
-        Converter converter = Converter(Loader.getRecords(url));
+        Converter converter = new Converter(Loader.getRecords(url));
         converter.compress("https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:1234");
         // doid:1234
     }
@@ -73,7 +95,7 @@ import org.biopragmatics.curies.Loader;
 class LocalResourceDemo {
     public static void main(String[] args) {
         File file = new File("/Users/cthoyt/dev/bioregistry/exporst/contexts/bioregistry.epm.json")
-        Converter converter = Converter(Loader.getRecords(file));
+        Converter converter = new Converter(Loader.getRecords(file));
         converter.compress("https://www.ebi.ac.uk/ols/ontologies/doid/terms?obo_id=DOID:1234");
         // doid:1234
     }
